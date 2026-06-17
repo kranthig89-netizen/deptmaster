@@ -1,0 +1,121 @@
+@model DepartmentMaster.Models.Department
+
+<form id="departmentForm" method="post" asp-action="@(Model.RecordNo > 0 ? "Edit" : "Create")">
+    @Html.AntiForgeryToken()
+
+    @if (Model.RecordNo > 0)
+    {
+        <input type="hidden" name="RecordNo" value="@Model.RecordNo" />
+    }
+
+    <div class="form-group">
+        <label asp-for="DepartmentCode" class="control-label">Department Code <span class="text-danger">*</span></label>
+        <input asp-for="DepartmentCode" class="form-control" placeholder="e.g., 3200" @(Model.RecordNo > 0 ? "readonly" : "") />
+        <span asp-validation-for="DepartmentCode" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DepartmentName" class="control-label">Department Name <span class="text-danger">*</span></label>
+        <input asp-for="DepartmentName" class="form-control" placeholder="e.g., Ceramic Valve" />
+        <span asp-validation-for="DepartmentName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="JapanHead" class="control-label">Got Japanese Head <span class="text-danger">*</span></label>
+        <select asp-for="JapanHead" class="form-control">
+            <option value="">-- Select --</option>
+            <option value="Y">Yes</option>
+            <option value="N">No</option>
+        </select>
+        <span asp-validation-for="JapanHead" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Office" class="control-label">Direct/Indirect Dept <span class="text-danger">*</span></label>
+        <select asp-for="Office" class="form-control">
+            <option value="">-- Select --</option>
+            <option value="P">Direct</option>
+            <option value="O">Indirect</option>
+        </select>
+        <span asp-validation-for="Office" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Section" class="control-label">Got Section <span class="text-danger">*</span></label>
+        <select asp-for="Section" class="form-control">
+            <option value="">-- Select --</option>
+            <option value="Y">Yes</option>
+            <option value="N">No</option>
+        </select>
+        <span asp-validation-for="Section" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Prefix" class="control-label">General Abbreviation <span class="text-danger">*</span></label>
+        <input asp-for="Prefix" class="form-control" placeholder="e.g., CV (Extrusion - EX)" />
+        <span asp-validation-for="Prefix" class="text-danger"></span>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Exit</button>
+        <button type="button" class="btn btn-primary" onclick="submitForm()">Save</button>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://code.jquery.com/jquery-validate/1.19.3/additional-methods.min.js"></script>
+
+    <script>
+        $(function () {
+            $("#departmentForm").validate({
+                rules: {
+                    DepartmentCode: {
+                        required: true,
+                        minlength: 2,
+                        maxlength: 50
+                    },
+                    DepartmentName: {
+                        required: true,
+                        minlength: 2,
+                        maxlength: 100
+                    },
+                    JapanHead: "required",
+                    Office: "required",
+                    Section: "required",
+                    Prefix: {
+                        required: true,
+                        minlength: 1,
+                        maxlength: 50
+                    }
+                },
+                messages: {
+                    DepartmentCode: {
+                        required: "Department Code is required",
+                        minlength: "Department Code must be at least 2 characters",
+                        maxlength: "Department Code cannot exceed 50 characters"
+                    },
+                    DepartmentName: {
+                        required: "Department Name is required",
+                        minlength: "Department Name must be at least 2 characters",
+                        maxlength: "Department Name cannot exceed 100 characters"
+                    },
+                    JapanHead: "Please select Japanese Head",
+                    Office: "Please select Office Type",
+                    Section: "Please select Section",
+                    Prefix: {
+                        required: "Abbreviation is required",
+                        minlength: "Abbreviation must be at least 1 character",
+                        maxlength: "Abbreviation cannot exceed 50 characters"
+                    }
+                },
+                highlight: function (element) {
+                    $(element).closest('.form-group').addClass('has-error');
+                },
+                unhighlight: function (element) {
+                    $(element).closest('.form-group').removeClass('has-error');
+                }
+            });
+        });
+    </script>
+}

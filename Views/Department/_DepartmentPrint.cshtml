@@ -1,0 +1,105 @@
+@model List<DepartmentMaster.Models.Department>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Department Master - Print</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .print-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .print-header h2 {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .print-header p {
+            color: #666;
+            margin: 5px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table thead {
+            background-color: #f0f0f0;
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        table th {
+            font-weight: bold;
+            background-color: #007bff;
+            color: white;
+        }
+        table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .print-footer {
+            margin-top: 30px;
+            text-align: right;
+            font-size: 12px;
+            color: #666;
+        }
+        @media print {
+            body {
+                margin: 0;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="print-header">
+        <h2>Department Master Report</h2>
+        <p><strong>Generated on:</strong> @DateTime.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss")</p>
+        <p><strong>Total Records:</strong> @Model.Count</p>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Department Code</th>
+                <th>Department Name</th>
+                <th>Japan Head</th>
+                <th>Office Type</th>
+                <th>Has Section</th>
+                <th>Abbreviation</th>
+                <th>Created By</th>
+                <th>Created On</th>
+                <th>Edited By</th>
+                <th>Edited On</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var dept in Model)
+            {
+                <tr>
+                    <td>@dept.DepartmentCode</td>
+                    <td>@dept.DepartmentName</td>
+                    <td>@(dept.JapanHead == "Y" ? "Yes" : "No")</td>
+                    <td>@(dept.Office == "P" ? "Direct" : "Indirect")</td>
+                    <td>@(dept.Section == "Y" ? "Yes" : "No")</td>
+                    <td>@dept.Prefix</td>
+                    <td>@dept.CreatedBy</td>
+                    <td>@dept.CreatedOn?.ToString("yyyy-MM-dd")</td>
+                    <td>@dept.EditedBy</td>
+                    <td>@dept.EditedOn?.ToString("yyyy-MM-dd")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="print-footer">
+        <p>This is a system-generated report. Please verify data before use.</p>
+    </div>
+</body>
+</html>
